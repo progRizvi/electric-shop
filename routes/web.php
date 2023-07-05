@@ -107,9 +107,6 @@ Route::get('/contact-submit', [ContactController::class, 'contactSubmit'])->name
 Route::get('/register', [AuthController::class, 'registerForm'])->name('register.form');
 Route::post('/register-submit', [AuthController::class, 'registerSubmitForm'])->name('register.submit.form');
 
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-Route::post('/login-submit', [AuthController::class, 'loginSubmitForm'])->name('login.submit');
-
 //////------Reset Password-------///////
 
 Route::get('/forgot-password-link', [ForgotPasswordController::class, 'forgotPass'])->name('forgot.pass.link');
@@ -119,6 +116,10 @@ Route::post('/submit-reset-password', [ForgotPasswordController::class, 'submitR
 
 //all_routes
  */
+
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login-submit', [AuthController::class, 'loginSubmitForm'])->name('login.submit');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
