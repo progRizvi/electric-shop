@@ -1,7 +1,7 @@
 @extends('frontend.master')
 @section('contents')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="{{ url('frontend/assets/img/breadcrumb.jpg') }}">
+    <section class="breadcrumb-section set-bg" data-setbg="{{ url('frontend/assets/img/breadcrumb.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -49,7 +49,7 @@
                                             data-setbg="{{ url('uploads/product', $Product->product_image) }}">
                                             <ul class="featured__item__pic__hover">
                                                 <!-- <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li> -->
+                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li> -->
 
                                                 @if ($Product->product_quantity > 0)
                                                     <li><a href="{{ route('add.cart.page', $Product->id) }}"><i

@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\frontend;
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Product;
-use App\Models\Support;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -25,24 +24,24 @@ class HomeController extends Controller
     public function registerSubmitForm(Request $request)
     {
 
-        $request->validate([
+        $validation = Validator::make($request->all(), [
 
             'name' => 'required',
             'email' => 'required|unique:customers,email',
-            'password' => 'required|digits:5'
+            'password' => 'required|min:6',
 
         ]);
 
-        $Customer = Customer::create([
+        if ($validation->fails()) {
+            return back()->withErrors($validation)->withInput();
+        }
+
+        Customer::create([
             'name' => $request->name,
-            'image' => $request->image,
             'email' => $request->email,
-            'password' => bcrypt($request['password'])
-
-
+            'password' => bcrypt($request['password']),
         ]);
-
-        toastr()->success('Customer Registration Successfully');
+        toastr()->success('Register Successfully');
         return back();
     }
 
@@ -64,16 +63,14 @@ class HomeController extends Controller
         }
     }
 
-
     public function frontPassUpdate(Request $request)
     {
         $Customer = Customer::find(auth('customer')->user()->id)->update([
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
         ]);
         toastr()->success('Password updated Successfuly');
         return redirect()->back();
     }
-
 
     public function frontLogout()
     {

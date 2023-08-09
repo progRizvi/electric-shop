@@ -5,7 +5,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="{{ route('home') }}"><img src="{{ url('frontend/assets/img/globalbazar.png') }}"
+                            <a href="{{ route('home') }}"><img src="{{ url('frontend/assets/img/logo.png') }}"
                                     alt=""></a>
                         </div>
                         <ul>

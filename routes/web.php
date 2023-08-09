@@ -14,6 +14,17 @@ use App\Http\Controllers\backend\ProfileController;
 use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\frontend\ContactController;
+use App\Http\Controllers\frontend\FOReceiptController;
+use App\Http\Controllers\frontend\FrontUserController;
+use App\Http\Controllers\frontend\HomeController;
+use App\Http\Controllers\frontend\LanguageController;
+use App\Http\Controllers\frontend\PageController;
+use App\Http\Controllers\frontend\SearchController;
+use App\Http\Controllers\frontend\ShopController;
+use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SupportController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +43,6 @@ use Illuminate\Support\Facades\Route;
 //////////////////////////frontend///////////////////////////
 
 //Frontend_all
-/*
 Route::get('/', [HomeController::class, 'frontendHome'])->name('home');
 
 ///////////////frontend reg & login////////////////////
@@ -72,24 +82,24 @@ Route::post('/frontend-support-message', [SupportController::class, 'message'])-
 
 Route::group(['middleware' => ['auth:customer']], function () {
 
-Route::get('/frontUser-profile', [FrontUserController::class, 'frontUserProfile'])->name('frontuser.profile');
-Route::get('/frontUser-order-track/{id}', [FrontUserController::class, 'frontUserOrderTrack'])->name('frontuser.order.track');
-Route::post('/frontUser-profile-update', [FrontUserController::class, 'frontUserProfileUpdate'])->name('frontuser.profile.update');
+    Route::get('/frontUser-profile', [FrontUserController::class, 'frontUserProfile'])->name('frontuser.profile');
+    Route::get('/frontUser-order-track/{id}', [FrontUserController::class, 'frontUserOrderTrack'])->name('frontuser.order.track');
+    Route::post('/frontUser-profile-update', [FrontUserController::class, 'frontUserProfileUpdate'])->name('frontuser.profile.update');
 
-Route::get('/front-order-receipt/{id}', [FOReceiptController::class, 'frontOrderReceipt'])->name('front.order.receipt');
+    Route::get('/front-order-receipt/{id}', [FOReceiptController::class, 'frontOrderReceipt'])->name('front.order.receipt');
 
-Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
-Route::get('/cancel-order/{id}', [FrontUserController::class, 'cancelOrder'])->name('cancel.order');
+    Route::get('/cancel-order/{id}', [FrontUserController::class, 'cancelOrder'])->name('cancel.order');
 
 //////////---------- ssl commerz-----------//////////
 
-Route::post('/pay', [SslCommerzPaymentController::class, 'index'])->name("pay.now");
+    Route::post('/pay', [SslCommerzPaymentController::class, 'index'])->name("pay.now");
 //Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
 
-Route::post('/success', [SslCommerzPaymentController::class, 'success'])->name('payment.success');
-Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
-Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+    Route::post('/success', [SslCommerzPaymentController::class, 'success'])->name('payment.success');
+    Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+    Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 });
 
 /////////////////Blog Page////////////////////////
@@ -115,7 +125,6 @@ Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'newPass
 Route::post('/submit-reset-password', [ForgotPasswordController::class, 'submitResetPassword'])->name('submit.reset.pass');
 
 //all_routes
- */
 
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('/login-submit', [AuthController::class, 'loginSubmitForm'])->name('login.submit');

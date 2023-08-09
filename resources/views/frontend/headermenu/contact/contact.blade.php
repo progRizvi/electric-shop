@@ -26,7 +26,7 @@
                     <div class="contact__widget">
                         <span class="icon_phone"></span>
                         <h4>Phone</h4>
-                        <p>+880 1308260888</p>
+                        <p>+880 123456789</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -68,7 +68,7 @@
             <div class="inside-widget">
                 <h4>Kodeeo Limited</h4>
                 <ul>
-                    <li>Phone: +880 1308260888</li>
+                    <li>Phone: +880 123456789</li>
                     <li>Road-10/A, House 15, Sector-11,Uttara, Dhaka-1230</li>
                 </ul>
             </div>
