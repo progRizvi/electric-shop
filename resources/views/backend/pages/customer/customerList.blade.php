@@ -21,9 +21,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($Customers as $Customer)
+                @foreach ($Customers as $key => $Customer)
                     <tr>
-                        <th scope="row">{{ $Customer->id }}</th>
+                        <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $Customer->name }}</td>
                         <td><img width="70px" src="{{ url('uploads/frontUser', $Customer->image) }}" alt=""
                                 srcset=""></td>

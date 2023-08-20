@@ -71,7 +71,7 @@ Route::get('/pages-shop-details/{id}', [PageController::class, 'pagesShopDetails
 Route::get('/cart', [CartController::class, 'cartDetails'])->name('cart.details');
 Route::get('/add-cart/{id}', [CartController::class, 'addCartPage'])->name('add.cart.page');
 Route::get('/delete-cart-item/{id}', [CartController::class, 'deleteCartItem'])->name('delete.cart.item');
-Route::get('/cart-update/{id}', [CartController::class, 'updateCartItem'])->name('update.cart.item');
+Route::post('/cart-update/{id}', [CartController::class, 'updateCartItem'])->name('update.cart.item');
 
 /////////////----------Front Support---------//////////
 //support

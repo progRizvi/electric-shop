@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Models\Order;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Models\DOT;
+use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
-use App\Models\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -18,12 +16,10 @@ class AdminController extends Controller
         return view('backend.dashboard');
     }
 
-
     public function master()
     {
         return view('backend.master');
     }
-
 
     public function newPage()
     {
@@ -35,8 +31,6 @@ class AdminController extends Controller
 
         $Orders = Order::orderBy('id', 'DESC')->paginate(10);
 
-
-
         $totalOrderCount = [];
 
         for ($m = 1; $m <= 12; $m++) {
@@ -47,7 +41,6 @@ class AdminController extends Controller
         return view('backend.pages.newPage', compact('Orders', 'totalOrder', 'totalCustomer', 'totalAmount', 'totalOrderCount'));
     }
 
-
     public function todaysOrder()
     {
         $Orders = Order::all();
@@ -55,7 +48,6 @@ class AdminController extends Controller
 
         return view('backend.pages.order.todaysOrder', compact('Orders', 'todaysOrder'));
     }
-
 
     public function orderList()
     {
@@ -67,13 +59,12 @@ class AdminController extends Controller
         } else {
             $search_key = request()->search;
             $customer = Customer::where('name', 'LIKE', '%' . $search_key . '%')->pluck("id")->toArray();
-            $Orders = Order::whereIn("customer_id",  $customer)->with('customer')->paginate(10);
+            $Orders = Order::whereIn("customer_id", $customer)->with('customer')->paginate(10);
         }
 
         $Customers = Customer::all();
 
         $order_details = OrderDetails::with("order")->with("product")->get();
-
 
         return view('backend.pages.order.orderlist', compact('Orders', 'order_details', 'Customers'));
     }
@@ -89,20 +80,21 @@ class AdminController extends Controller
         $Order = Order::find($id);
 
         $Order->update([
-            "status" => "Approved"
+            "status" => "Approved",
         ]);
         return redirect()->back();
     }
 
     public function orderReciept($id)
     {
-       
 
         $Order = Order::find($id);
-        
 
         $Product = Product::all();
         $order_details = OrderDetails::where("order_id", $id)->get();
+        if (!$order_details) {
+            return redirect()->back();
+        }
         return view('backend.pages.order.orderReciept', compact('Order', 'order_details', 'Product'));
     }
 }

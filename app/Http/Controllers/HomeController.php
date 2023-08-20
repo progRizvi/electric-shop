@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +12,7 @@ class HomeController extends Controller
     }
     public function loginSubmitForm(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $credentials = $request->except('_token');
         $authentication = auth("customer")->attempt($credentials);
         if ($authentication) {

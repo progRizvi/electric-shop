@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use App\Models\Product;
-use App\Models\OrderDetails;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use RealRashid\SweetAlert\Facades\Alert;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Mail\OrderEmail;
 use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -31,10 +29,6 @@ class SslCommerzPaymentController extends Controller
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
-
-
-
-
 
         $post_data = array();
         $post_data['total_amount'] = $request->total_payment; # You cant not pay less than 10
@@ -74,7 +68,6 @@ class SslCommerzPaymentController extends Controller
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
 
-
         #Before  going to initiate the payment order status need to insert or update as Pending.
         $update_product = Order::where('transaction_id', $post_data['tran_id'])
             ->updateOrCreate([
@@ -86,15 +79,11 @@ class SslCommerzPaymentController extends Controller
                 'status' => 'Pending',
                 'address' => $post_data['cus_add1'],
                 'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency']
+                'currency' => $post_data['currency'],
 
             ]);
 
-
-
-
         $sslc = new SslCommerzNotification();
-
 
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
         $payment_options = $sslc->makePayment($post_data, 'hosted');
@@ -151,8 +140,6 @@ class SslCommerzPaymentController extends Controller
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
 
-
-
         #Before  going to initiate the payment order status need to update as Pending.
         $update_product = Order::where('transaction_id', $post_data['tran_id'])
             ->updateOrCreate([
@@ -164,7 +151,7 @@ class SslCommerzPaymentController extends Controller
                 'status' => 'Pending',
                 'address' => $post_data['cus_add1'],
                 'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency']
+                'currency' => $post_data['currency'],
 
             ]);
 
@@ -180,9 +167,8 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+
         echo "Transaction is Successful";
-
-
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
         $currency = $request->input('currency');
@@ -201,7 +187,7 @@ class SslCommerzPaymentController extends Controller
                 That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
                 in order table as Processing or Complete.
                 Here you can also sent sms or email for successfull transaction to customer
-                */
+                 */
                 $update_product = Order::where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
 
@@ -209,7 +195,7 @@ class SslCommerzPaymentController extends Controller
             }
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*
-             That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
+            That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
             echo "Transaction is successfully Completed";
         } else {
@@ -219,26 +205,24 @@ class SslCommerzPaymentController extends Controller
 
         //notify()->success('Transection Successfully');
 
-
         if (session()->get("myCart")) {
             foreach (session()->get("myCart") as $key => $product) {
 
                 $dbProduct = Product::find($key);
                 $dbProduct->update(
                     [
-                        "product_quantity" => (int) $dbProduct->product_quantity - $product['product_quantity']
+                        "product_quantity" => (int) $dbProduct->product_quantity - $product['product_quantity'],
                     ]
                 );
                 OrderDetails::create([
                     "product_id" => $dbProduct->id,
                     "order_id" => $order_details->id,
-                    "qty" => $product['product_quantity']
+                    "qty" => $product['product_quantity'],
                 ]);
             }
         }
-
-
-        Mail::to(auth('customer')->user()->email)->send(new OrderEmail());
+        
+        Mail::to($order_details->email)->send(new OrderEmail());
 
         session()->forget('myCart');
 
@@ -280,44 +264,4 @@ class SslCommerzPaymentController extends Controller
         }
     }
 
-    public function ipn(Request $request)
-    {
-        #Received all the payement information from the gateway
-        if ($request->input('tran_id')) #Check transation id is posted or not.
-        {
-
-            $tran_id = $request->input('tran_id');
-
-            #Check order status in order tabel against the transaction id or order id.
-            $order_details = Order::where('transaction_id', $tran_id)
-                ->select('transaction_id', 'status', 'currency', 'amount')->first();
-
-            if ($order_details->status == 'Pending') {
-                $sslc = new SslCommerzNotification();
-                $validation = $sslc->orderValidate($request->all(), $tran_id, $order_details->amount, $order_details->currency);
-                if ($validation == TRUE) {
-                    /*
-                    That means IPN worked. Here you need to update order status
-                    in order table as Processing or Complete.
-                    Here you can also sent sms or email for successful transaction to customer
-                    */
-                    $update_product = Order::where('transaction_id', $tran_id)
-                        ->update(['status' => 'Processing']);
-
-                    echo "Transaction is successfully Completed";
-                }
-            } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
-
-                #That means Order status already updated. No need to udate database.
-
-                echo "Transaction is already successfully Completed";
-            } else {
-                #That means something wrong happened. You can redirect customer to your product page.
-
-                echo "Invalid Transaction";
-            }
-        } else {
-            echo "Invalid Data";
-        }
-    }
 }

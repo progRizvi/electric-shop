@@ -19,9 +19,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($Brands as $Brand)
+                @foreach ($Brands as $key => $Brand)
                     <tr>
-                        <th scope="row">{{ $Brand->id }}</th>
+                        <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $Brand->email_address }}</td>
                         <td>{{ $Brand->password }}</td>
                         <td><a class="btn btn-danger" href="{{ route('delete.brand', $Brand->id) }}">Delete</a>

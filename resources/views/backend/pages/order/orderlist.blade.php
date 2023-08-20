@@ -35,10 +35,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($Orders as $Order)
+                @foreach ($Orders as $key => $Order)
                     <tr>
-
-                        <th scope="row">{{ $Order->id }}</th>
+                        <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $Order->customer->name }}</td>
                         <td>{{ $Order->name }}</td>
                         <td>{{ $Order->email }}</td>
@@ -48,15 +47,11 @@
                         <td>{{ $Order->address }}</td>
                         <td>{{ $Order->transaction_id }}</td>
                         <td>{{ $Order->currency }}</td>
-
                         <td>
-
                             <a type="submit" href="{{ route('order.reciept', $Order->id) }}"
                                 class="btn btn-success my-2">Order Reciept</a>
                             <a type="submit" href="{{ route('order.edit', $Order->id) }}"
                                 class="btn btn-outline-dark">Edit</a>
-
-
                         </td>
 
                     </tr>

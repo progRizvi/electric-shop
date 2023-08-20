@@ -45,9 +45,9 @@
             <tbody>
 
                 @if (isset($Orders))
-                    @foreach ($Orders as $Order)
+                    @foreach ($Orders as $key => $Order)
                         <tr>
-                            <th scope="row">{{ $Order->id }}</th>
+                            <th scope="row">{{ $key + 1 }}</th>
                             <td>{{ $Order->customer->name }}</td>
                             <td>{{ $Order->name }}</td>
                             <td>{{ $Order->email }}</td>
@@ -59,11 +59,11 @@
                             <td>{{ $Order->currency }}</td>
 
                             <!-- <td>
-                        @if (!($Order->status == 'cancel'))
+                            @if (!($Order->status == 'cancel'))
     <a type="submit" href="{{ route('order.reciept', $Order->id) }}" class="btn btn-success my-2">Order Reciept</a>
-                        <a type="submit" href="{{ route('order.edit', $Order->id) }}" class="btn btn-outline-dark">Edit</a>
+                            <a type="submit" href="{{ route('order.edit', $Order->id) }}" class="btn btn-outline-dark">Edit</a>
     @endif
-                    </td> -->
+                        </td> -->
 
                         </tr>
                     @endforeach

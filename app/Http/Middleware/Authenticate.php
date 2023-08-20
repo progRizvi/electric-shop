@@ -14,7 +14,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (!auth()->check()) {
+        if (!auth("web")->check()) {
             return route('login');
         }
         if (request()->route()->getName() == "checkout") {

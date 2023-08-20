@@ -7,7 +7,7 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> Electrical Shop | Electric Shop </title>
 
     <!-- Google Font -->
@@ -73,6 +73,7 @@
         $("#total_payment").val(total);
         $('#sslczPayBtn').prop('postdata', obj);
     </script>
+    {{--
     <script>
         (function(window, document) {
             var loader = function() {
@@ -87,7 +88,15 @@
                 loader);
         })(window, document);
     </script>
-
+     --}}
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    @stack('scripts')
 </body>
 
 </html>

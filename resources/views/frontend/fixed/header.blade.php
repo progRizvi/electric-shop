@@ -20,12 +20,6 @@
                         </div>
 
                         <div class="header__top__right__auth">
-
-
-
-
-
-
                             @auth('customer')
                                 <button class="btn btn-outline-success"><a href="{{ route('frontuser.profile') }}">
                                         {{ auth('customer')->user()->name }}
@@ -220,7 +214,6 @@
 
                     <form action="{{ route('login.submit.front') }}" method="POST">
                         @csrf
-
                         <div class="form-group my-3">
                             <label for="exampleInputPassword1">Email Address</label>
                             <input type="email" name="email" required class="form-control"

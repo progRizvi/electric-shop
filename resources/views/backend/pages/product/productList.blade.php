@@ -45,9 +45,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($Products as $Product)
+                    @foreach ($Products as $key => $Product)
                         <tr>
-                            <th scope="row">{{ $Product->id }}</th>
+                            <th scope="row">{{ $key + 1 }}</th>
                             <td>{{ $Product->product_name }}</td>
                             <td>{{ $Product->categories->category_name }}</td>
                             <td><img width="70px" src="{{ url('uploads/product', $Product->product_image) }}"
